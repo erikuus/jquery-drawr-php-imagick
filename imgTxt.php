@@ -1,6 +1,6 @@
 <?php
 
-$image = new Imagick("img/image.jpg");
+$image = new Imagick('img/image.jpg');
 
 $imagedata = file_get_contents('img/layer.txt');
 $layerBase64 = preg_replace('#^data:image/[^;]+;base64,#', '', $imagedata);
@@ -10,7 +10,7 @@ $layer->readImageBlob($layerBlob);
 
 // composite one image onto another
 $image->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
-$image->setImageArtifact('compose:args', "1,0,-0.5,0.5");
+$image->setImageArtifact('compose:args', '1,0,-0.5,0.5');
 $image->compositeImage($layer, Imagick::COMPOSITE_MATHEMATICS, 0, 0);
 
 // give image a format
