@@ -1,6 +1,6 @@
 # Mis see on?
 
-See on näidisrakendus, mille abil saab brauseris varjata pildil valitud alasid. Pildile saab joonistada musti jooni ja kaste nii, et need varjavad ära pildi originaalse sisu. Pildile joonistatud kihi saab salvestada teksti või pildifailina. Salvestatud kihi saab liita kokku aluspildiga nii, et tulemuseks osaliselt varjatud pildifail  
+See on näidisrakendus, mille abil saab brauseris varjata pildil valitud alasid. Pildile saab joonistada musti jooni ja kaste nii, et need varjavad ära pildi originaalse sisu. Pildile joonistatud kihi saab salvestada teksti või pildifailina. Salvestatud kihi saab liita kokku aluspildiga nii, et tulemuseks on osaliselt varjatud pildifail  
 
 # Millisel tehnoloogial see põhineb?
 
