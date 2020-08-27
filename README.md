@@ -11,9 +11,9 @@ See näidisrakendus kasutab:
 # Kuidas seda kasutada
 
 1. Pane kood veebiserveri, kuhu on paigaldatud nii PHP kui Imagick, veebijuure kausta.
-2. Ava http://host/jquery-drawr-php-imagick/index.html (see on lehekülg, kus saab pildile joonistada).
-3. Ava http://host/jquery-drawr-php-imagick/imgImg.php (see on pildifail, mis on koostatud originaalpildist ja kihist, mis on salvestatud pildifailina). 
-4. Ava http://host/jquery-drawr-php-imagick/imgTxt.php (see on pildifail, mis on koostatud originaalpildist ja kihist, mis on salvestatud tekstifailina).
+2. Ava brauseris index.html (see on lehekülg, kus saab pildile joonistada).
+3. Ava brauseris imgImg.php (see on pildifail, mis on koostatud originaalpildist ja kihist, mis on salvestatud pildifailina). 
+4. Ava brauseris imgTxt.php (see on pildifail, mis on koostatud originaalpildist ja kihist, mis on salvestatud tekstifailina).
 5. Testimiseks vaheta index.html faili koodis saveImg.php (salvestab joonistatud kihi failina) ja saveTxt.php (salvestab joonistatud kihi tekstina).
 
 		// add custom save button
