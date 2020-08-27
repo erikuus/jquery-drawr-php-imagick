@@ -528,6 +528,19 @@
 					plugin.initialize_canvas.call(currentCanvas,img.width,img.height,true);
 					currentCanvas.undoStack = [{data: currentCanvas.toDataURL("image/png"),current:true}];
 					context.drawImage(img,0,0);
+					//fit canvas to window
+					if(currentCanvas.settings.fit_to_window) {
+						var window_ratio = $(window).width()/$(window).height();
+						var canvas_ratio = $(currentCanvas).width()/$(currentCanvas).height();
+						var factor = window_ratio > canvas_ratio ? $(window).height()/$(currentCanvas).height() : $(window).width()/$(currentCanvas).width();
+						currentCanvas.zoomFactor = factor;
+						$(currentCanvas).width(currentCanvas.width*factor);
+						$(currentCanvas).height(currentCanvas.height*factor);
+					}
+					//scroll canvas to center
+					if(currentCanvas.settings.scroll_to_center) {
+						plugin.apply_scroll.call(currentCanvas,((currentCanvas.width*currentCanvas.zoomFactor)-$(currentCanvas).parent().width())/2,((currentCanvas.height*currentCanvas.zoomFactor)-$(currentCanvas).parent().height())/2,true);
+					}
 				};
 				img.src=param;
 			} else if ( action === "destroy" ) {
@@ -604,6 +617,7 @@
 					"color_mode" : "picker",
 					"clear_on_init" : true,
 					"scroll_to_center" : false,
+					"fit_to_window" : false,
 					"brushes_title" : "Brushes",
 					"background_image" : "",
 					"bruttons" : {} // pencil, pen, brush, eyedropper, airbrush, eraser, square, filledsquare, move, marker, text, palette
@@ -737,6 +751,16 @@
 						plugin.apply_scroll.call(currentCanvas,currentCanvas.scrollX * zoomDiff,currentCanvas.scrollY * zoomDiff,true);
 					}
 				});
+
+				//fit canvas to window
+				if(currentCanvas.settings.fit_to_window) {
+					var window_ratio = $(window).width()/$(window).height();
+					var canvas_ratio = $(currentCanvas).width()/$(currentCanvas).height();
+					var factor = window_ratio > canvas_ratio ? $(window).height()/$(currentCanvas).height() : $(window).width()/$(currentCanvas).width();
+					currentCanvas.zoomFactor = factor;
+					$(currentCanvas).width(currentCanvas.width*factor);
+					$(currentCanvas).height(currentCanvas.height*factor);
+				}
 
 				//scroll canvas to center
 				if(currentCanvas.settings.scroll_to_center) {

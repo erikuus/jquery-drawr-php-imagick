@@ -39,6 +39,7 @@
 			brushes_title: "Vahendid",
 			background_image: "img/image.jpg",
 			scroll_to_center: true,
+			fit_to_window: true,
 			buttons: {
 				move: {order: 1},
 				brush: {order: 2},
@@ -98,25 +99,25 @@
 		// });
 
 		// read default layer from image file
-		// $.ajax({
-		// 	url: 'img/layer.png',
-		// 	cache: false,
-		// 	xhr: function(){
-		// 		var xhr = new XMLHttpRequest();
-		// 		xhr.responseType= 'blob'
-		// 		return xhr;
-		// 	},
-		// 	success: function(data){
-		// 		var reader = new FileReader();
-		// 		reader.onloadend = function () {
-		// 			$("#container .canvas").drawr("load", reader.result);
-		// 		}
-		// 		reader.readAsDataURL(data);
-		// 	},
-		// 	error:function(){
-		// 		alert('Could not load layer!');
-		// 	}
-		// });
+		$.ajax({
+			url: 'img/layer.png',
+			cache: false,
+			xhr: function(){
+				var xhr = new XMLHttpRequest();
+				xhr.responseType= 'blob'
+				return xhr;
+			},
+			success: function(data){
+				var reader = new FileReader();
+				reader.onloadend = function () {
+					$("#container .canvas").drawr("load", reader.result);
+				}
+				reader.readAsDataURL(data);
+			},
+			error:function(){
+				alert('Could not load layer!');
+			}
+		});
 	</script>
 </body>
 </html>
