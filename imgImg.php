@@ -1,6 +1,8 @@
 <?php
 
-$image = new Imagick('img/image.jpg');
+require_once __DIR__ . '/config.php';
+
+$image = new Imagick($image['path']);
 $layer = new Imagick('img/layer.png');
 
 // composite one image onto another

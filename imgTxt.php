@@ -1,6 +1,8 @@
 <?php
 
-$image = new Imagick('img/image.jpg');
+require_once __DIR__ . '/config.php';
+
+$image = new Imagick($image['path']);
 
 $imagedata = file_get_contents('img/layer.txt');
 $layerBase64 = preg_replace('#^data:image/[^;]+;base64,#', '', $imagedata);

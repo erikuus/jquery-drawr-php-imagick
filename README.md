@@ -1,20 +1,20 @@
 # Mis see on?
 
-See on näidisrakendus, mille abil saab brauseris varjata pildil valitud alasid. Pildile saab joonistada musti jooni ja kaste nii, et need varjavad ära pildi originaalse sisu. Pildile joonistatud kihi saab salvestada teksti või pildifailina. Salvestatud kihi saab liita kokku aluspildiga nii, et tulemuseks on osaliselt varjatud pildifail  
+See on näidisrakendus, mille abil saab brauseris varjata pildil valitud alasid. Pildile saab joonistada musti jooni ja kaste nii, et need varjavad ära pildi originaalse sisu. Pildile joonistatud kihi saab salvestada teksti või pildifailina. Salvestatud kihi saab liita kokku aluspildiga nii, et tulemuseks on osaliselt varjatud pildifail
 
 # Millisel tehnoloogial see põhineb?
 
-See näidisrakendus kasutab: 
-1. Jquery drawr pluginat https://github.com/avokicchi/jquery-drawr 
+See näidisrakendus kasutab:
+1. Jquery drawr pluginat https://github.com/avokicchi/jquery-drawr
 2. PHP-d ja Imagickut
 
 # Kuidas seda kasutada
 
 1. Pane kood veebiserveri, kuhu on paigaldatud nii PHP kui Imagick, veebijuure kausta.
 2. Ava brauseris index.html (see on lehekülg, kus saab pildile joonistada).
-3. Ava brauseris imgImg.php (see on pildifail, mis on koostatud originaalpildist ja kihist, mis on salvestatud pildifailina). 
+3. Ava brauseris imgImg.php (see on pildifail, mis on koostatud originaalpildist ja kihist, mis on salvestatud pildifailina).
 4. Ava brauseris imgTxt.php (see on pildifail, mis on koostatud originaalpildist ja kihist, mis on salvestatud tekstifailina).
-5. Testimiseks vaheta index.html faili koodis saveImg.php (salvestab joonistatud kihi failina) ja saveTxt.php (salvestab joonistatud kihi tekstina).
+5. Testimiseks vaheta index.php faili koodis saveImg.php (salvestab joonistatud kihi failina) ja saveTxt.php (salvestab joonistatud kihi tekstina).
 
 		// add custom save button
 		var buttoncollection = $("#container .canvas").drawr("button", {
@@ -53,3 +53,5 @@ See näidisrakendus kasutab:
 		// 		alert('Could not load layer!');
 		// 	}
 		// });
+
+7. Muuda config.php faili, et testida lahendust erinevates mõõtudes piltidega. 
