@@ -253,7 +253,7 @@
 		/* create a slider */
 		plugin.create_slider = function(toolbox,title,min,max,value){
 			var self=this;
-			$(toolbox).append('<div style="clear:both;font-weight:bold;text-align:center;padding:5px 0px 5px 0px">' + title + '</div><div style="clear:both;display: inline-block;width: 50px;height: 60px;margin-top:5px;padding: 0;"><input class="slider-component slider-' + title.toLowerCase() + '" value="' + value + '" style="background:transparent;width: 50px;height: 50px;margin: 0;transform-origin: 25px 25px;transform: rotate(90deg);" type="range" min="' + min + '" max="' + max + '" step="1" /><span>' + value + '</span></div>');
+			$(toolbox).append('<div style="clear:both;font-weight:bold;text-align:center;padding:5px 0px 5px 0px">' + title + '</div><div style="clear:both;display: inline-block;width: 50px;height: 60px;margin-top:5px;padding: 0;"><input class="slider-component slider-' + title.toLowerCase() + '" value="' + value + '" style="background:transparent; width: 200px; height: 200px; margin: 125px 0 0 0; transform-origin: 100px 25px; transform: rotate(90deg)" type="range" min="' + min + '" max="' + max + '" step="1" /><span>' + value + '</span></div>');
 			$(toolbox).find(".slider-" + title.toLowerCase()).on("mousedown touchstart",function(e){
 				e.stopPropagation();
 			}).on("input.drawr",function(e){
@@ -525,22 +525,9 @@
 
 				img.onload = function(){
 					var context = currentCanvas.getContext("2d", { alpha: currentCanvas.settings.enable_tranparency });
-					plugin.initialize_canvas.call(currentCanvas,img.width,img.height,true);
+					//plugin.initialize_canvas.call(currentCanvas,img.width,img.height,true);
 					currentCanvas.undoStack = [{data: currentCanvas.toDataURL("image/png"),current:true}];
 					context.drawImage(img,0,0);
-					//fit canvas to window
-					if(currentCanvas.settings.fit_to_window) {
-						var window_ratio = $(window).width()/$(window).height();
-						var canvas_ratio = $(currentCanvas).width()/$(currentCanvas).height();
-						var factor = window_ratio > canvas_ratio ? $(window).height()/$(currentCanvas).height() : $(window).width()/$(currentCanvas).width();
-						currentCanvas.zoomFactor = factor;
-						$(currentCanvas).width(currentCanvas.width*factor);
-						$(currentCanvas).height(currentCanvas.height*factor);
-					}
-					//scroll canvas to center
-					if(currentCanvas.settings.scroll_to_center) {
-						plugin.apply_scroll.call(currentCanvas,((currentCanvas.width*currentCanvas.zoomFactor)-$(currentCanvas).parent().width())/2,((currentCanvas.height*currentCanvas.zoomFactor)-$(currentCanvas).parent().height())/2,true);
-					}
 				};
 				img.src=param;
 			} else if ( action === "destroy" ) {
@@ -619,6 +606,7 @@
 					"scroll_to_center" : false,
 					"fit_to_window" : false,
 					"brushes_title" : "Brushes",
+					"zoom_title" : "Zoom",
 					"background_image" : "",
 					"bruttons" : {} // pencil, pen, brush, eyedropper, airbrush, eraser, square, filledsquare, move, marker, text, palette
 				};
@@ -719,20 +707,45 @@
 						if(typeof currentCanvas.active_brush.activate!=="undefined") currentCanvas.active_brush.activate.call(currentCanvas,currentCanvas.active_brush,context);
 					});
 				}
-				plugin.create_slider.call(currentCanvas, currentCanvas.$settingsToolbox,"alpha", 0,100,parseInt(100*defaultSettings.inital_brush_alpha)).on("input.drawr",function(){
+				plugin.create_slider.call(currentCanvas, currentCanvas.$settingsToolbox,"alpha",0,100,parseInt(100*defaultSettings.inital_brush_alpha)).on("input.drawr",function(){
 					currentCanvas.brushAlpha = parseFloat(this.value/100);
 					currentCanvas.active_brush.alpha = parseFloat(this.value/100);;
 					plugin.is_dragging=false;
 				});
-				plugin.create_slider.call(currentCanvas, currentCanvas.$settingsToolbox,"size", 2,100,defaultSettings.inital_brush_size).on("input.drawr",function(){
+				plugin.create_slider.call(currentCanvas, currentCanvas.$settingsToolbox,"size",2,100,defaultSettings.inital_brush_size).on("input.drawr",function(){
 					currentCanvas.brushSize = this.value;
 					currentCanvas.active_brush.size = this.value;
 					plugin.is_dragging=false;
 				});
+
+				//fit canvas to window
+				var initialSliderValue = 100;
+				if(currentCanvas.settings.fit_to_window) {
+					var oWidth = $(currentCanvas).width();
+					var oHeight = $(currentCanvas).height();
+					var window_ratio = $(window).width()/$(window).height();
+					var canvas_ratio = oWidth/oHeight;
+					var factor = window_ratio > canvas_ratio ? $(window).height()/oHeight : $(window).width()/oWidth;
+					var nWidth = currentCanvas.width*factor;
+					var nHeight = currentCanvas.height*factor;
+					// set zoom factor and new dimensions
+					currentCanvas.zoomFactor = factor;
+					$(currentCanvas).width(nWidth);
+					$(currentCanvas).height(nHeight);
+					// calculate initial slider value
+					var sliderPercentage=(nWidth*100)/oWidth;
+					initialSliderValue=Math.round(sliderPercentage/10)*10;
+				}
+
+				//scroll canvas to center
+				if(currentCanvas.settings.scroll_to_center) {
+					plugin.apply_scroll.call(currentCanvas,((currentCanvas.width*currentCanvas.zoomFactor)-$(currentCanvas).parent().width())/2,((currentCanvas.height*currentCanvas.zoomFactor)-$(currentCanvas).parent().height())/2,true);
+				}
+
 				//size dialog
 				//zoom dialog
-				currentCanvas.$zoomToolbox = plugin.create_toolbox.call(currentCanvas,"zoom",{ left: $(currentCanvas).parent().offset().left + $(currentCanvas).parent().innerWidth() - 80, top: $(currentCanvas).parent().offset().top },"Zoom",80);
-				plugin.create_slider.call(currentCanvas, currentCanvas.$zoomToolbox,"zoom", 0,200,100).on("input.drawr",function(){
+				currentCanvas.$zoomToolbox = plugin.create_toolbox.call(currentCanvas,"zoom",{ left: $(currentCanvas).parent().offset().left + $(currentCanvas).parent().innerWidth() - 80, top: $(currentCanvas).parent().offset().top },currentCanvas.settings.zoom_title,80);
+				plugin.create_slider.call(currentCanvas, currentCanvas.$zoomToolbox,"",10,200,initialSliderValue).on("input.drawr",function(){
 					//currentCanvas.brushAlpha = parseFloat(this.value/100);
 					var cleaned = Math.ceil(this.value/10)*10;
 					$(this).next().text(cleaned);
@@ -751,21 +764,6 @@
 						plugin.apply_scroll.call(currentCanvas,currentCanvas.scrollX * zoomDiff,currentCanvas.scrollY * zoomDiff,true);
 					}
 				});
-
-				//fit canvas to window
-				if(currentCanvas.settings.fit_to_window) {
-					var window_ratio = $(window).width()/$(window).height();
-					var canvas_ratio = $(currentCanvas).width()/$(currentCanvas).height();
-					var factor = window_ratio > canvas_ratio ? $(window).height()/$(currentCanvas).height() : $(window).width()/$(currentCanvas).width();
-					currentCanvas.zoomFactor = factor;
-					$(currentCanvas).width(currentCanvas.width*factor);
-					$(currentCanvas).height(currentCanvas.height*factor);
-				}
-
-				//scroll canvas to center
-				if(currentCanvas.settings.scroll_to_center) {
-					plugin.apply_scroll.call(currentCanvas,((currentCanvas.width*currentCanvas.zoomFactor)-$(currentCanvas).parent().width())/2,((currentCanvas.height*currentCanvas.zoomFactor)-$(currentCanvas).parent().height())/2,true);
-				}
 
 				plugin.bind_draw_events.call(currentCanvas);
 			}
