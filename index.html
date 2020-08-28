@@ -19,7 +19,6 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css" rel="stylesheet">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.drawr.combined.js?v=2"></script>
-
 </head>
 <body>
 	<div id="container">
@@ -27,6 +26,7 @@
 	</div>
 	<input type="file" id="file-picker" style="display:none;">
 	<script type="text/javascript">
+    (function () {
 		// define settings
 		$("#container .canvas").drawr({
 			enable_tranparency: true,
@@ -115,6 +115,7 @@
 				alert('Could not load layer!');
 			}
 		});
+    })();
 	</script>
 </body>
 </html>

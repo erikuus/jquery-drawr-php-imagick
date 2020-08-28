@@ -742,26 +742,28 @@
 					plugin.apply_scroll.call(currentCanvas,((currentCanvas.width*currentCanvas.zoomFactor)-$(currentCanvas).parent().width())/2,((currentCanvas.height*currentCanvas.zoomFactor)-$(currentCanvas).parent().height())/2,true);
 				}
 
-				//size dialog
 				//zoom dialog
 				currentCanvas.$zoomToolbox = plugin.create_toolbox.call(currentCanvas,"zoom",{ left: $(currentCanvas).parent().offset().left + $(currentCanvas).parent().innerWidth() - 80, top: $(currentCanvas).parent().offset().top },currentCanvas.settings.zoom_title,80);
 				plugin.create_slider.call(currentCanvas, currentCanvas.$zoomToolbox,"",10,200,initialSliderValue).on("input.drawr",function(){
 					//currentCanvas.brushAlpha = parseFloat(this.value/100);
+					var oWidth = $(currentCanvas).width();
+					var oHeight = $(currentCanvas).height();
 					var cleaned = Math.ceil(this.value/10)*10;
-					$(this).next().text(cleaned);
 					var factor = (1/100)*cleaned;
-					var zoomDiff=1+(factor-currentCanvas.zoomFactor);
+					var nWidth = currentCanvas.width*factor;
+					var nHeight = currentCanvas.height*factor;
+					$(this).next().text(cleaned);
 					currentCanvas.zoomFactor = factor;
-					$(currentCanvas).width(currentCanvas.width*factor);
-					$(currentCanvas).height(currentCanvas.height*factor);
+					$(currentCanvas).width(nWidth);
+					$(currentCanvas).height(nHeight);
 					if(currentCanvas.settings.background_image=="") {
 						$(currentCanvas).css({
 							"background-size": (20*factor) + "px " + (20*factor) + "px "
 						});
 					}
-					if(zoomDiff!==1){
-						//doesn't seem to work perfectly but it'll do for now
-						plugin.apply_scroll.call(currentCanvas,currentCanvas.scrollX * zoomDiff,currentCanvas.scrollY * zoomDiff,true);
+					if(oWidth!=nWidth){
+						// keep canvas centered when zooming
+						plugin.apply_scroll.call(currentCanvas,currentCanvas.scrollX-((oWidth-nWidth)/2),currentCanvas.scrollY-((oHeight-nHeight)/2),true);
 					}
 				});
 
