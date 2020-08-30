@@ -744,7 +744,7 @@
 
 				//zoom dialog
 				currentCanvas.$zoomToolbox = plugin.create_toolbox.call(currentCanvas,"zoom",{ left: $(currentCanvas).parent().offset().left + $(currentCanvas).parent().innerWidth() - 80, top: $(currentCanvas).parent().offset().top },currentCanvas.settings.zoom_title,80);
-				plugin.create_slider.call(currentCanvas, currentCanvas.$zoomToolbox,"",10,200,initialSliderValue).on("input.drawr",function(){
+				plugin.create_slider.call(currentCanvas, currentCanvas.$zoomToolbox,"",10,140,initialSliderValue).on("input.drawr",function(){
 					//currentCanvas.brushAlpha = parseFloat(this.value/100);
 					var oWidth = $(currentCanvas).width();
 					var oHeight = $(currentCanvas).height();
@@ -1256,7 +1256,7 @@ jQuery.fn.drawr.register({
 jQuery.fn.drawr.register({
 	icon: "mdi mdi-fountain-pen-tip mdi-24px",
 	name: "pen",
-	size: 3,
+	size: 5,
 	alpha: 1,
 	order: 2,
 	pressure_affects_alpha: false,
@@ -1282,7 +1282,7 @@ jQuery.fn.drawr.register({
 jQuery.fn.drawr.register({
 	icon: "mdi mdi-spray mdi-24px",
 	name: "airbrush",
-	size: 40,
+	size: 20,
 	alpha: 0.5,
 	order: 3,
 	pressure_affects_alpha: true,
@@ -1480,11 +1480,60 @@ jQuery.fn.drawr.register({
 		context.fillRect((brush.startPosition.x*adjustzoom)-adjustx,(brush.startPosition.y*adjustzoom)-adjusty,(brush.currentPosition.x-brush.startPosition.x)*adjustzoom,(brush.currentPosition.y-brush.startPosition.y)*adjustzoom);
 	}
 });
+jQuery.fn.drawr.register({
+	icon: "mdi mdi-square-outline mdi-24px",
+	name: "unfilledsquare",
+	size: 3,
+	alpha: 1,
+	order: 9,
+	pressure_affects_alpha: false,
+	pressure_affects_size: false,
+	activate: function(brush,context){
+
+	},
+	deactivate: function(brush,context){},
+	drawStart: function(brush,context,x,y,size,alpha,event){
+		brush.currentAlpha = alpha;
+		brush.startPosition = {
+			"x" : x,
+			"y" : y
+		};
+		this.effectCallback = brush.effectCallback;
+		context.globalAlpha=alpha;
+		context.lineWidth = size;
+	},
+	drawStop: function(brush,context,x,y,size,alpha,event){
+		context.globalAlpha=alpha;
+		context.lineJoin = 'miter';
+		context.lineWidth = size;
+		context.fillStyle = "rgb(" + this.brushColor.r + "," + this.brushColor.g + "," + this.brushColor.b + ")";
+		// to fill the space outside a rect and inside the drawing layer bounds, construct four auxiliary rects
+		context.fillRect(0, 0, this.width, brush.startPosition.y);
+		context.fillRect(0, brush.startPosition.y, brush.startPosition.x, brush.currentPosition.y-brush.startPosition.y);
+		context.fillRect(brush.currentPosition.x, brush.startPosition.y, this.width-brush.currentPosition.x, brush.currentPosition.y-brush.startPosition.y);
+		context.fillRect(0, brush.currentPosition.y, this.width, this.height-brush.currentPosition.y);
+		this.effectCallback = null;
+		return true;
+	},
+	drawSpot: function(brush,context,x,y,size,alpha,event) {
+		brush.currentPosition = {
+			"x" : x,
+			"y" : y
+		};
+	},
+	effectCallback: function(context,brush,adjustx,adjusty,adjustzoom){
+		context.globalAlpha = brush.currentAlpha;//brush.currentAlpha;
+		context.lineWidth = brush.currentSize*adjustzoom;
+		context.lineJoin = 'miter';
+		context.strokeStyle = "rgb(" + this.brushColor.r + "," + this.brushColor.g + "," + this.brushColor.b + ")";
+		context.strokeRect((brush.startPosition.x*adjustzoom)-adjustx,(brush.startPosition.y*adjustzoom)-adjusty,(brush.currentPosition.x-brush.startPosition.x)*adjustzoom,(brush.currentPosition.y-brush.startPosition.y)*adjustzoom);
+	}
+});
 //effectCallback
 jQuery.fn.drawr.register({
 	icon: "mdi mdi-cursor-move mdi-24px",
 	name: "move",
-	order: 9,
+	order: 10,
 	activate: function(brush,context){
 		$(this).parent().css({"cursor":"move"});//"overflow":"scroll",
 	},
@@ -1534,7 +1583,7 @@ jQuery.fn.drawr.register({
 	name: "marker",
 	size: 15,
 	alpha: 0.3,
-	order: 10,
+	order: 11,
 	pressure_affects_alpha: false,
 	pressure_affects_size: false,
 	activate: function(brush,context){
@@ -1605,7 +1654,7 @@ jQuery.fn.drawr.register({
 	name: "text",
 	size: 22,
 	alpha: 1,
-	order: 11,
+	order: 12,
 	pressure_affects_alpha: false,
 	pressure_affects_size: false,
 	activate: function(brush,context){
