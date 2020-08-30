@@ -1256,7 +1256,7 @@ jQuery.fn.drawr.register({
 jQuery.fn.drawr.register({
 	icon: "mdi mdi-fountain-pen-tip mdi-24px",
 	name: "pen",
-	size: 5,
+	size: 3,
 	alpha: 1,
 	order: 2,
 	pressure_affects_alpha: false,
@@ -1282,8 +1282,8 @@ jQuery.fn.drawr.register({
 jQuery.fn.drawr.register({
 	icon: "mdi mdi-spray mdi-24px",
 	name: "airbrush",
-	size: 20,
-	alpha: 0.5,
+	size: 40,
+	alpha: 0.2,
 	order: 3,
 	pressure_affects_alpha: true,
 	pressure_affects_size: false,
