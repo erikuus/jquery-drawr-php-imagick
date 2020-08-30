@@ -40,10 +40,12 @@
             fit_to_window: true,
             buttons: {
                 move: {order: 1},
-                brush: {order: 2},
-                airbrush: {order: 3},
-                filledsquare: {order: 4},
-                eraser: {order: 5, size: 20}
+                pen: {order: 2, size: 15, icon: "mdi mdi-grease-pencil mdi-24px"},
+                brush: {order: 3, size: 30},
+                airbrush: {order: 4, alpha: 0.5, size: 150},
+                filledsquare: {order: 5},
+                unfilledsquare: {order: 6},
+                eraser: {order: 7, size: 50}
             }
         });
 
