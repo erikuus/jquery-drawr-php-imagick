@@ -608,7 +608,7 @@
 					"brushes_title" : "Brushes",
 					"zoom_title" : "Zoom",
 					"background_image" : "",
-					"bruttons" : {} // pencil, pen, brush, eyedropper, airbrush, eraser, square, filledsquare, move, marker, text, palette
+					"bruttons" : {}
 				};
 				if(typeof action == "object") defaultSettings = Object.assign(defaultSettings, action);
 				currentCanvas.settings = defaultSettings;

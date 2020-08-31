@@ -56,7 +56,6 @@
         var buttoncollection = $(".canvas").drawr("button", {
             "icon":"mdi mdi-folder-open mdi-24px"
         }).on("touchstart mousedown", function() {
-            //alert("demo of a custom button with your own functionality!");
             $("#file-picker").click();
         });
         $("#file-picker")[0].onchange = function(){
@@ -99,7 +98,7 @@
         // });
 
         // read default layer from image file
-/*        $.ajax({
+        $.ajax({
             url: 'img/layer.png',
             cache: false,
             xhr: function(){
@@ -117,7 +116,7 @@
             error:function(){
                 alert('Could not load layer!');
             }
-        });*/
+        });
     })();
     </script>
 </body>
