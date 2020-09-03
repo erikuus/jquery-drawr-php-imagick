@@ -12,7 +12,6 @@ $layer->readImageBlob($layerBlob);
 
 // composite one image onto another
 $image->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
-$image->setImageArtifact('compose:args', '1,0,-0.5,0.5');
 $image->compositeImage($layer, Imagick::COMPOSITE_MATHEMATICS, 0, 0);
 
 // give image a format
